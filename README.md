@@ -1,7 +1,7 @@
 # SFAS_Final_project
 Goal: To find QR codes in an office environment
 
-##Setup code
+## Setup code
 
 ```bash
 roslaunch final_project turtlebot3_world.launch
@@ -30,7 +30,7 @@ roslaunch final_project spawn_markers.launch
 roslaunch final_project spawn_obstacles.launch
 ```
 
-##Navigation
+## Navigation
 As we have seen in this course, one of the major advantages of using ROS, is that as long as the interface (i.e. topics) match, we can reuse previous tools very easily! Use the same navigation package you have used previously in the course to navigate our new robot.
 With the navigation running, open rviz in another terminal:
 
@@ -43,7 +43,7 @@ In RViz add the topics that are seen in the screenshot above.
 Now you should be able to navigate the robot by pressing the "2D Nav Goal" button in RViz and then pressing somewhere on the map.
 
 
-##QR Codes
+## QR Codes
 Obviously you'll need to be able to read the QR markers used for the project. First install the following:
 
 ```bash
