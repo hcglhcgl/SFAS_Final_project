@@ -63,3 +63,9 @@ The readings are being published to the topic /visp_auto_tracker/object_position
 rostopic echo /visp_auto_tracker/object_position
 rostopic echo /visp_auto_tracker/code_message
 ```
+
+## Our script
+To run our navigation script, run the following command:
+```bash
+rosrun final_project scripts/find_markers.py
+```
