@@ -3,6 +3,8 @@ Goal: To find QR codes in an office environment
 
 ## Setup code
 
+Launch the simulation with the following command:
+
 ```bash
 roslaunch final_project turtlebot3_world.launch
 ```
@@ -41,7 +43,6 @@ rviz
 In RViz add the topics that are seen in the screenshot above.
 
 Now you should be able to navigate the robot by pressing the "2D Nav Goal" button in RViz and then pressing somewhere on the map.
-
 
 ## QR Codes
 Obviously you'll need to be able to read the QR markers used for the project. First install the following:
