@@ -12,6 +12,8 @@ def retrieveQR(data):
     N = int(data.split("\r\n")[4].split("=")[1])
     L = data.split("\r\n")[5].split("=")[1]
 
+    finalWord[N-1] = L
+
 
 def listener():
 	rospy.init_node('subscriberNode', anonymous=True)
