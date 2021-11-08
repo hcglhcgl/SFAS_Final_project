@@ -24,11 +24,11 @@
   <include file="$(find hello_ros)/launch/move_base.launch.xml"/>
 
   <!-- AMCL -->
- <include file="$(find turtlebot3_navigation)/launch/amcl.launch">
+<!--  <include file="$(find turtlebot3_navigation)/launch/amcl.launch">
     <arg name="initial_pose_x" value="$(arg x_pos)" />
     <arg name="initial_pose_y" value="$(arg y_pos)" />
     <arg name="initial_pose_a" value="$(arg initial_pose_a)" />
-  </include> 
+  </include> -->
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find final_project)/worlds/final_project_world.world"/>
