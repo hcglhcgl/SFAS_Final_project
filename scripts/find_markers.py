@@ -33,4 +33,23 @@ def sub_cal(data):
         #call function that moves the robot to next QR-code
 
 if __name__ == '__main__':
-    listener()
+
+    data = "X=2.35\r\nY=3.24\r\nX_next=5.3\r\nY_next=5.9\r\nN=3\r\nL=M"
+
+    #listener()
+
+    x, y, x_next, y_next, N, L, finalWord = retrieveQR(data.data)
+
+    print x, y, x_next, y_next, N, L, finalWord
+
+    data = "X=2.35\r\nY=3.24\r\nX_next=5.3\r\nY_next=5.9\r\nN=2\r\nL=A"
+
+    x, y, x_next, y_next, N, L, finalWord = retrieveQR(data.data)
+
+    print x, y, x_next, y_next, N, L, finalWord
+
+    data = "X=2.35\r\nY=3.24\r\nX_next=5.3\r\nY_next=5.9\r\nN=1\r\nL=G"
+
+    x, y, x_next, y_next, N, L, finalWord = retrieveQR(data.data)
+
+    print x, y, x_next, y_next, N, L, finalWord
