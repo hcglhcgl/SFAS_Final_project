@@ -14,6 +14,7 @@ def retrieveQR(data):
     L = data.split("\r\n")[5].split("=")[1]
 
     finalWord[N-1] = L
+    finalWord = ''.join(finalWord)
 
     return x, y, x_next, y_next, N, L
 
