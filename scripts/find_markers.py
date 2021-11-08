@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
 import rospy
+#import random_driving
 from std_msgs.msg import String
 
 finalWord = ["0", "0", "0", "0", "0"]
+
 def retrieveQR(data):
     
     x = float(data.split("\r\n")[0].split("=")[1])
@@ -19,9 +21,7 @@ def retrieveQR(data):
 
 
 def listener():
-	rospy.init_node('subscriberNode', anonymous=True)
 	rospy.Subscriber('/visp_auto_tracker/code_message', String, sub_cal)
-	rospy.spin()
 
 def sub_cal(data):
     if data.data:
@@ -32,4 +32,9 @@ def sub_cal(data):
         #call function that moves the robot to next QR-code
 
 if __name__ == '__main__':
+    rospy.init_node('subscriberNode', anonymous=True)
+    rate = rospy.Rate(60)
     listener()
+    while not rospy.is_shutdown():
+       # wander()
+       rate.sleep()
