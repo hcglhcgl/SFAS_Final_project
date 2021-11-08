@@ -70,3 +70,11 @@ To run our navigation script, run the following command:
 ```bash
 rosrun final_project scripts/find_markers.py
 ```
+
+## How to solve the problem:
+To understand the project goal of the project we present here an example pipeline for solving the problem. The robot could:
+1. “Manually” map the area (you can teleoperate ONLY for this step).
+2. Start exploring the area until a QR target is found
+3. Find a second QR target,
+4. Use the “hidden” frame of reference to locate the rest of the target’s frame of reference.
+5. Construct the “secret message” sentence by concatenating the strings from all detectedtargets in the correct order (from 1 to 5
