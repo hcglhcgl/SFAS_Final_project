@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
+#import random_driving
 from std_msgs.msg import String
 
 finalWord_list = ["0", "0", "0", "0", "0"]
@@ -36,4 +37,9 @@ def retrieveQR(data):
         rospy.signal_shutdown("reason") 
 
 if __name__ == '__main__':
+    rospy.init_node('subscriberNode', anonymous=True)
+    rate = rospy.Rate(60)
     QRlistener()
+    while not rospy.is_shutdown():
+       # wander()
+       rate.sleep()
