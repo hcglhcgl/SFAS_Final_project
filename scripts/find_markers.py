@@ -3,8 +3,9 @@
 import rospy
 from std_msgs.msg import String
 
+finalWord = ["0", "0", "0", "0", "0"]
 def retrieveQR(data):
-    finalWord = ["0", "0", "0", "0", "0"]
+    
     x = float(data.split("\r\n")[0].split("=")[1])
     y = float(data.split("\r\n")[1].split("=")[1])
     x_next = float(data.split("\r\n")[2].split("=")[1])
@@ -14,6 +15,8 @@ def retrieveQR(data):
 
     finalWord[N-1] = L
 
+    return x, y, x_next, y_next, N, L
+
 
 def listener():
 	rospy.init_node('subscriberNode', anonymous=True)
@@ -22,32 +25,11 @@ def listener():
 
 def sub_cal(data):
     if data.data:
-        x, y, x_next, y_next, N, L, finalWord = retrieveQR(data.data)
+        x, y, x_next, y_next, N, L = retrieveQR(data.data)
 
         print x, y, x_next, y_next, N, L, finalWord
 
         #call function that moves the robot to next QR-code
 
 if __name__ == '__main__':
-
     listener()
-
-    """
-    data = "X=2.35\r\nY=3.24\r\nX_next=5.3\r\nY_next=5.9\r\nN=3\r\nL=M"
-
-    x, y, x_next, y_next, N, L, finalWord = retrieveQR(data.data)
-
-    print x, y, x_next, y_next, N, L, finalWord
-
-    data = "X=2.35\r\nY=3.24\r\nX_next=5.3\r\nY_next=5.9\r\nN=2\r\nL=A"
-
-    x, y, x_next, y_next, N, L, finalWord = retrieveQR(data.data)
-
-    print x, y, x_next, y_next, N, L, finalWord
-
-    data = "X=2.35\r\nY=3.24\r\nX_next=5.3\r\nY_next=5.9\r\nN=1\r\nL=G"
-
-    x, y, x_next, y_next, N, L, finalWord = retrieveQR(data.data)
-
-    print x, y, x_next, y_next, N, L, finalWord
-    """
