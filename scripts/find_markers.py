@@ -14,7 +14,6 @@ def retrieveQR(data):
     L = data.split("\r\n")[5].split("=")[1]
 
     finalWord[N-1] = L
-    finalWord = ''.join(finalWord)
 
     return x, y, x_next, y_next, N, L
 
@@ -33,4 +32,5 @@ def sub_cal(data):
         #call function that moves the robot to next QR-code
 
 if __name__ == '__main__':
+    print "test"
     listener()
