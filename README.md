@@ -77,4 +77,24 @@ To understand the project goal of the project we present here an example pipelin
 2. Start exploring the area until a QR target is found
 3. Find a second QR target,
 4. Use the “hidden” frame of reference to locate the rest of the target’s frame of reference.
-5. Construct the “secret message” sentence by concatenating the strings from all detectedtargets in the correct order (from 1 to 5
+5. Construct the “secret message” sentence by concatenating the strings from all detectedtargets in the correct order (from 1 to 5)
+
+## To run:
+```bash
+roslaunch final_project turtlebot3_world.launch
+```
+
+```bash
+rviz
+```
+
+```bash
+rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+```
+### QR-code:
+```bash
+roslaunch final_project qr_visp.launch
+```
+```bash
+rostopic echo /visp_auto_tracker/code_message
+```
