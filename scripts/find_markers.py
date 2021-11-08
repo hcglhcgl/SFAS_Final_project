@@ -32,5 +32,4 @@ def sub_cal(data):
         #call function that moves the robot to next QR-code
 
 if __name__ == '__main__':
-    print "test"
     listener()
