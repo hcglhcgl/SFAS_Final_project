@@ -5,6 +5,9 @@ import rospy
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 
+from nav_msgs.msg import Odometry
+
+
 finalWord_list = ["0", "0", "0", "0", "0"]
 N_old = 0
 gotoNextQR = False
@@ -15,13 +18,8 @@ twist = Twist()
 
 def QRlistener():
     rospy.init_node('subscriberNode', anonymous=True)
-    rospy.Subscriber('/visp_auto_tracker/code_message', String, getQR)
-    rospy.spin()
-
-def objectPos():
-    print "here1"
-    rospy.init_node('subscriberNode', anonymous=True)
-    rospy.Subscriber('/visp_auto_tracker/object_position', String, getObjectPos)
+    rospy.Subscriber('/visp_auto_tracker/code_message', String, retrieveQR)
+    rospy.Subscriber('odom', Odometry, printOdo)
     rospy.spin()
 
 def getObjectPos(data):
@@ -73,6 +71,9 @@ def getQR(data):
         print "Final word: " + finalWord_str
         rospy.signal_shutdown("reason")
 
+
+def printOdo(data):
+    print data.pose.pose
 
 if __name__ == '__main__':
     print "Starting program"
