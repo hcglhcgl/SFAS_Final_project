@@ -4,12 +4,16 @@ import rospy
 #import random_driving
 from std_msgs.msg import String
 
+from nav_msgs.msg import Odometry
+
+
 finalWord_list = ["0", "0", "0", "0", "0"]
 N_old = 0
 
 def QRlistener():
     rospy.init_node('subscriberNode', anonymous=True)
     rospy.Subscriber('/visp_auto_tracker/code_message', String, retrieveQR)
+    rospy.Subscriber('odom', Odometry, printOdo)
     rospy.spin()
 
 def retrieveQR(data):
@@ -35,6 +39,9 @@ def retrieveQR(data):
         print "Done with exploring"
         print "Final word: " + finalWord_str
         rospy.signal_shutdown("reason") 
+
+def printOdo(data):
+    print data.pose.pose
 
 if __name__ == '__main__':
     rospy.init_node('subscriberNode', anonymous=True)
