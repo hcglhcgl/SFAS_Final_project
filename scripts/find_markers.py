@@ -32,7 +32,7 @@ def spinRobot():
     print "You spin me right round"
 
     twist.angular.z = 0.4
-
+    
     cmd_vel_pub.publish(twist)
 
 def stopRobot():
