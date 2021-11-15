@@ -139,7 +139,8 @@ def goto_observe_position(observe_position):
 if __name__ == '__main__':
     rospy.init_node('patrol')
     rate = rospy.Rate(10)
-
+    print "Starting script"
+    
     client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
     client.wait_for_server()
 
