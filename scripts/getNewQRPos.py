@@ -50,7 +50,12 @@ def getNewQRPos(x, y, x_next, y_next):
 
     robot_to_qr2 = robot_to_qr1 - between_qr1_qr2
 
-    print robot_to_qr2
+    #print robot_to_qr2
+
+    next_qr_x = robot_to_qr2[0][3]
+    next_qr_y = robot_to_qr2[1][3]
+
+    return next_qr_x, next_qr_y
 
 
 if __name__ == '__main__':
@@ -61,4 +66,7 @@ if __name__ == '__main__':
     x_next = -0.5
     y_next = 1
 
-    getNewQRPos(x, y, x_next, y_next)
+    next_qr_x, next_qr_y = getNewQRPos(x, y, x_next, y_next)
+
+    print next_qr_x
+    print next_qr_y
