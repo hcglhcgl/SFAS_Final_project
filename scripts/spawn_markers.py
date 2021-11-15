@@ -20,10 +20,12 @@ if __name__ == '__main__':
     with open(markers, "r") as f:
         markers_product_xml = f.read()
 
-    marker_poses = [[-3.24, 0, 1.57075],
-                    [4, -0.1, -1.57075],
-                    [-6.5, 0, -1.57075],
-                    [-3.658665, 0.511559, -3.137797]] # x, y, rot_z
+    #marker_poses = [[-3.24, 0, 1.57075],
+    #                [4, -0.1, -1.57075],
+    #                [-6.5, 0, -1.57075],
+    #                [-3.658665, 0.511559, -3.137797]] # x, y, rot_z
+
+    marker_poses = [[0, 0, 0]] # x, y, rot_z
 
     layout = rospy.get_param('~layout') - 1 # align for list index, -> 0 for random layout
     rospy.loginfo("The Layout is {}".format(layout))
