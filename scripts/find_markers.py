@@ -18,7 +18,7 @@ twist = Twist()
 
 def QRlistener():
     rospy.init_node('subscriberNode', anonymous=True)
-    rospy.Subscriber('/visp_auto_tracker/code_message', String, retrieveQR)
+    rospy.Subscriber('/visp_auto_tracker/code_message', String, getQR)
     rospy.Subscriber('odom', Odometry, printOdo)
     rospy.spin()
 
