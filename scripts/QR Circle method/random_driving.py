@@ -31,4 +31,10 @@ def random_driving():
     twist.angular.z = 0.4
   cmd_vel_pub.publish(twist)
 
+def spinning_around(): 
+  twist = Twist()
+  twist.linear.x = 0.0
+  twist.angular.z = 0.4
+  cmd_vel_pub.publish(twist)
+
 # END ALL
