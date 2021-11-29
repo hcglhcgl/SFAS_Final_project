@@ -13,7 +13,6 @@ def scan_callback(msg):
     tmp.append(msg.ranges[i])
   g_range_ahead = min(tmp)
  
- 
 g_range_ahead = 1 # anything to start
 scan_sub = rospy.Subscriber('scan', LaserScan, scan_callback)
 cmd_vel_pub = rospy.Publisher('cmd_vel', Twist, queue_size=1)
@@ -22,20 +21,9 @@ state_change_time = rospy.Time.now() + rospy.Duration(1)
 driving_forward = True
 rate = rospy.Rate(60)
 
-def random_driving():
-  #print g_range_ahead
-  if g_range_ahead < 0.8:
-    # TURN
-    driving_forward = False
-    #print "Turn"
-  
-  else: # we're not driving_forward
-    driving_forward = True # we're done spinning, time to go forward!
-    #DRIVE
-    #print "Drive"
-  
+def random_driving(): 
   twist = Twist()
-  if driving_forward:
+  if g_range_ahead < 0.8:
     twist.linear.x = 0.4
     twist.angular.z = 0.0
   else:
@@ -43,4 +31,4 @@ def random_driving():
     twist.angular.z = 0.4
   cmd_vel_pub.publish(twist)
 
-  # END ALL
+# END ALL
