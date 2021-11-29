@@ -77,12 +77,12 @@ def object_position_callback(message):
 def getQR(data):
     if 0 in finalWord_list:
         if data.data:
-            x = float(data.data.split("\r\n")[0].split("=")[1])
-            y = float(data.data.split("\r\n")[1].split("=")[1])
-            x_next = float(data.data.split("\r\n")[2].split("=")[1])
-            y_next = float(data.data.split("\r\n")[3].split("=")[1])
-            N = int(data.data.split("\r\n")[4].split("=")[1])
-            L = data.data.split("\r\n")[5].split("=")[1]
+            x = float(data.data.split("\r\n")[0].split("=")[1])         # x-coordinate of current QR target
+            y = float(data.data.split("\r\n")[1].split("=")[1])         # y-coordinate of current QR target
+            x_next = float(data.data.split("\r\n")[2].split("=")[1])    # x-coordinate of next QR target
+            y_next = float(data.data.split("\r\n")[3].split("=")[1])    # y-coordinate of next QR target
+            N = int(data.data.split("\r\n")[4].split("=")[1])           # ID-number of current QR target
+            L = data.data.split("\r\n")[5].split("=")[1]                # Letter from current QR target
             
             if L not in finalWord_list:
                 finalWord_list[N-1] = L
