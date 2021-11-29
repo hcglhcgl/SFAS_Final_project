@@ -21,8 +21,9 @@ state_change_time = rospy.Time.now() + rospy.Duration(1)
 driving_forward = True
 rate = rospy.Rate(60)
 
-def random_driving(): 
+def random_driving():
   twist = Twist()
+
   if g_range_ahead < 0.8:
     twist.linear.x = 0.4
     twist.angular.z = 0.0

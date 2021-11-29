@@ -34,6 +34,8 @@ first_coordinates_world = []
 coordinates_ready_qr = False
 coordinates_ready_world = False
 
+turns_spinning = 0
+
 framepoint = 0
 angle = 0
 
@@ -133,7 +135,11 @@ if __name__ == '__main__':
     ##Initial random driving:
     print ("Random Driving mode")
     while not transform_succesful:
-        rd.random_driving()
+        turns_spinning = turns_spinning + 1
+        if turns_spinning > 200000: #200000 seems to be 1 revolution
+            rd.random_driving()
+        else:
+            rd.spinning_around()
         if QR_spotted:
             stop()
             rospy.sleep(3.)
