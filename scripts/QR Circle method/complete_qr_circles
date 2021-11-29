@@ -56,6 +56,7 @@ def getQR(data):
 
             finalWord_list[N-1] = L
             
+            # -- Debugging -- Print out QR-code every time a new code is scanned
             if N_old is not N:
                 N_old = N
                 print x, y, x_next, y_next, N, L, finalWord_list
