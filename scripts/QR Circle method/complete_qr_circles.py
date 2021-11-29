@@ -18,7 +18,7 @@ from nav_msgs.msg import Odometry
 #------------------------x,y,x_next,y_next-----------
 QR_coordinates = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
 QR_coordinates_world = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
-finalWord_list = ["0", "0", "0", "0", "0"]
+finalWord_list = [0, 0, 0, 0, 0]
 N_old = 0
 
 transform_succesful = False
@@ -27,6 +27,15 @@ QR_spotted = False
 stop_driving = Twist()
 stop_driving.linear.x = 0
 stop_driving.angular.z = 0
+
+
+first_coordinates_qr = []
+first_coordinates_world = []
+coordinates_ready_qr = False
+coordinates_ready_world = False
+
+framepoint = 0
+angle = 0
 
 # ---------------------MOVEMENTS---------------------------
 def goto_position(position,frame):
@@ -53,19 +62,20 @@ def goal_pose(pose,frame):
     return goal_pose
 
 def stop():
-    print("Stop driving for a second")
+    print("Stop driving for 3 seconds")
     Cmd_vel.publish(stop_driving)
 #------------------------CALLBACKS-----------------
 def object_position_callback(message):
     global object_camera_position
-    object_camera_position = [message.pose.position.x, message.pose.position.y, message.pose.position.z, 1]
-    br.sendTransform((message.pose.position.x, message.pose.position.y, message.pose.position.z),
-                     (message.pose.orientation.x, message.pose.orientation.y, message.pose.orientation.z, message.pose.orientation.w),
+    object_camera_position = message
+    br.sendTransform((object_camera_position.pose.position.x, object_camera_position.pose.position.y, object_camera_position.pose.position.z),
+                     (object_camera_position.pose.orientation.x, object_camera_position.pose.orientation.y, object_camera_position.pose.orientation.z, object_camera_position.pose.orientation.w),
                      rospy.Time.now(),
                      "qr_code",
                      "camera_optical_link")
+    
 def getQR(data):
-    if "0" in finalWord_list:
+    if 0 in finalWord_list:
         if data.data:
             x = float(data.data.split("\r\n")[0].split("=")[1])
             y = float(data.data.split("\r\n")[1].split("=")[1])
@@ -73,21 +83,36 @@ def getQR(data):
             y_next = float(data.data.split("\r\n")[3].split("=")[1])
             N = int(data.data.split("\r\n")[4].split("=")[1])
             L = data.data.split("\r\n")[5].split("=")[1]
-            global QR_spotted
-            QR_spotted = True
-            finalWord_list[N-1] = L
             
-            global N_old
-            if N_old is not N:
-                N_old = N
+            if L not in finalWord_list:
+                finalWord_list[N-1] = L
                 print (x, y, x_next, y_next, N, L, finalWord_list)
+                
+                global QR_spotted
+                QR_spotted = True
+                
+                QR_coordinates[N-1][0] = x
+                QR_coordinates[N-1][1] = y
+                QR_coordinates[N-1][2] = x_next
+                QR_coordinates[N-1][3] = y_next
+                
+                first_coordinates_qr.extend((x,y))
+                if len(first_coordinates_qr) > 3:
+                    global coordinates_ready_qr
+                    coordinates_ready_qr = True
+            
+                
     else:
         finalWord_str = ''.join(finalWord_list)
         print ("Mission complete!")
         print ("Final word: " + finalWord_str)
         rospy.signal_shutdown("reason")
+        
+def printOdo(data):
 
+    (trans, rot) = listener.lookupTransform('/odom', '/qr_code', rospy.Time(0))
 
+    print (trans)
 #-------------------MAIN------------------------
 if __name__ == '__main__':
     print ("Starting script")
@@ -104,13 +129,31 @@ if __name__ == '__main__':
     Cmd_vel = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
     rospy.Subscriber("visp_auto_tracker/code_message", String, getQR, queue_size=10)
     rospy.Subscriber("visp_auto_tracker/object_position", PoseStamped, object_position_callback, queue_size=10)
-    
+    #rospy.Subscriber('odom', Odometry, printOdo, queue_size=10)
     ##Initial random driving:
     print ("Random Driving mode")
     while not transform_succesful:
         rd.random_driving()
         if QR_spotted:
             stop()
-            rospy.sleep(1.)
+            rospy.sleep(3.)
+            
+            (trans, rot) = listener.lookupTransform('/odom', '/qr_code', rospy.Time(0))
+            first_coordinates_world.extend((trans[0], trans[1]))
+            
+            print(first_coordinates_world)
+            
+            if len(first_coordinates_world) > 3:
+                coordinates_ready_world = True
+                print ("World coordinates are ready!")
+                
+            if coordinates_ready_world and coordinates_ready_qr:
+                print (first_coordinates_world[0:4])
+                print (first_coordinates_qr[0:4])
+                
+                framepoint,angle = QR.QR_frame_calc(first_coordinates_world[0:4],first_coordinates_qr[0:4])
+                print ("Framepoint: ",framepoint, "Angle: ",angle)
+                transform_succesful = True
+            QR_spotted = False
         
         
