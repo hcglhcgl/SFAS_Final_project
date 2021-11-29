@@ -77,6 +77,7 @@ def getQR(data):
             QR_spotted = True
             finalWord_list[N-1] = L
             
+            # -- Debugging -- Print out QR-code every time a new code is scanned
             global N_old
             if N_old is not N:
                 N_old = N
