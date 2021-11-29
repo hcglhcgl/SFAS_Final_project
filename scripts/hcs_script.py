@@ -108,12 +108,12 @@ def goto_observe_position(observe_position):
     client.send_goal(goal_position)
     client.wait_for_result()
     rospy.sleep(2)
-    print "arrived!" 
+    print ("arrived!")
 
 if __name__ == '__main__':
     rospy.init_node('QR_finder')
     rate = rospy.Rate(60)
-    print "Starting script"
+    print ("Starting script")
     
     client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
     client.wait_for_server()
@@ -126,6 +126,6 @@ if __name__ == '__main__':
     rospy.Subscriber("visp_auto_tracker/object_position", PoseStamped, object_position_callback, queue_size=10)
     
     ##Initial random driving:
-    print "Random Driving mode"
+    print ("Random Driving mode")
     rd.random_driving()
     

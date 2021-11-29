@@ -9,7 +9,7 @@ def calcVecAngle(vec1,vec2):
     angle2 = 2 * np.pi + angle
   return angle
 
-def QR_frame_calc (baseFrameQrPos, newFrameQrPos):
+def QR_frame_calc(baseFrameQrPos, newFrameQrPos):
   #Threshold that defines how accurate the final solution has to be
   ACC_THRESHOLD = 0.7
   #Position of OR codes in base frame
