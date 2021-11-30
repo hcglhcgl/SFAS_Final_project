@@ -25,7 +25,7 @@ def QR_frame_calc(baseFrameQrPos, newFrameQrPos):
   dist = np.linalg.norm(bfQR1-bfQR2)
   #Check if circles intersect
   if dist > rQR1 + rQR2 or dist == 0 or dist < abs(rQR1-rQR2):
-    return -1
+    return False,False
   #distance to the middle point between the intersections
   midPointDist = (rQR1**2 - rQR2**2 + dist**2)/(2**dist)
   #MiddLe point position
@@ -65,4 +65,4 @@ def QR_frame_calc(baseFrameQrPos, newFrameQrPos):
   if accuracy[0] < ACC_THRESHOLD and accuracy[1] < ACC_THRESHOLD:
     return np.array([interx2,intery2]), tempRotAngle
   #else, there is a dumpster fire somehere
-  return -2
+  return False,False
