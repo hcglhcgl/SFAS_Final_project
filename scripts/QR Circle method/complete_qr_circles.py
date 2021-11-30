@@ -70,11 +70,11 @@ def stop():
 def object_position_callback(message):
     global object_camera_position
     object_camera_position = message
-    br.sendTransform((object_camera_position.pose.position.x, object_camera_position.pose.position.y, object_camera_position.pose.position.z),
-                     (object_camera_position.pose.orientation.x, object_camera_position.pose.orientation.y, object_camera_position.pose.orientation.z, object_camera_position.pose.orientation.w),
-                     rospy.Time.now(),
-                     "qr_code",
-                     "camera_optical_link")
+    #br.sendTransform((object_camera_position.pose.position.x, object_camera_position.pose.position.y, object_camera_position.pose.position.z),
+    #                 (object_camera_position.pose.orientation.x, object_camera_position.pose.orientation.y, object_camera_position.pose.orientation.z, object_camera_position.pose.orientation.w),
+    #                 rospy.Time.now(),
+    #                 "qr_code",
+    #                 "camera_optical_link")
     
 def getQR(data):
     if 0 in finalWord_list:
@@ -136,32 +136,33 @@ if __name__ == '__main__':
     ##Initial random driving:
     print ("Random Driving mode")
     while not transform_succesful:
-        turns_spinning = turns_spinning + 1
-        if turns_spinning > 200000: #200000 seems to be 1 revolution
-            rd.random_driving()
-        else:
-            rd.spinning_around()
+        #turns_spinning = turns_spinning + 1
+        #if turns_spinning > 200000: #200000 seems to be 1 revolution
+        #    rd.random_driving()
+        #else:
+            #rd.spinning_around()
         if QR_spotted:
             stop()
             rospy.sleep(3.)
             
-            (trans, rot) = listener.lookupTransform('/odom', '/qr_code', rospy.Time(0))
-            first_coordinates_world.extend((trans[0], trans[1]))
-            
-            print(first_coordinates_world)
-            
+           # (trans, rot) = listener.lookupTransform('/odom', '/map', rospy.Time(0))
+           # first_coordinates_world.extend((trans[0], trans[1]))
+           # 
+            #print(first_coordinates_world)
+            first_coordinates_world.extend((0,0))
             if len(first_coordinates_world) > 3:
                 coordinates_ready_world = True
                 print ("World coordinates are ready!")
                 
             if coordinates_ready_world and coordinates_ready_qr:
-                print (first_coordinates_world[0:4])
+                #print (first_coordinates_world[0:4])
                 print (first_coordinates_qr[0:4])
                 
                 shift,angle = QR.QR_frame_calc(first_coordinates_world[0:4],first_coordinates_qr[0:4])
                 if shift is not False and angle is not False:
                     print ("Framepoint: ",framepoint, "Angle: ",angle)
                 transform_succesful = True
+                print ("Transform succesful")
             QR_spotted = False
     while 0 in finalWord_list:
         print ("Let's find the rest of the coordinates!")
@@ -174,5 +175,10 @@ if __name__ == '__main__':
                 goal_y = QR_coordinates[i][3]
                 print ("Next goal is: ",goal_x,":",goal_y)
                 
-                goto_position([[goal_x, goal_y, 0], [0, 0, 0, 1]],'qr_code')
+                while QR_spotted is False:
+                    #Do nothing
+                    rate = rospy.Rate(60)
+                if QR_spotted is True:
+                    QR_spotted = False
+                #goto_position([[goal_x, goal_y, 0], [0, 0, 0, 1]],'qr_code')
                 
