@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#from typing_extensions import final
 import numpy as np
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 import QR_Frame_calc as QR
@@ -132,7 +133,7 @@ if __name__ == '__main__':
     Cmd_vel = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
     rospy.Subscriber("visp_auto_tracker/code_message", String, getQR, queue_size=10)
     rospy.Subscriber("visp_auto_tracker/object_position", PoseStamped, object_position_callback, queue_size=10)
-    rospy.Subscriber('odom', Odometry, printOdo, queue_size=10)
+    #rospy.Subscriber('odom', Odometry, printOdo, queue_size=10)
     ##Initial random driving:
     print ("Random Driving mode")
     while not transform_succesful:
@@ -158,10 +159,18 @@ if __name__ == '__main__':
                 print (first_coordinates_world[0:4])
                 print (first_coordinates_qr[0:4])
                 
-                framepoint,angle = QR.QR_frame_calc(first_coordinates_world[0:4],first_coordinates_qr[0:4])
-                print ("Framepoint: ",framepoint, "Angle: ",angle)
-                transform_succesful = True
+                shift,angle = QR.QR_frame_calc(first_coordinates_world[0:4],first_coordinates_qr[0:4])
+                if shift is not False and angle is not False:
+                    print ("Framepoint: ",framepoint, "Angle: ",angle)
+                    transform_succesful = True
             QR_spotted = False
-    
-        
-        
+    while 0 in finalWord_list:
+        #Find the last coordinates with direct navigation
+        for i,val in enumerate(finalWord_list):
+            if i is not 0:
+                goal_x = QR_coordinates[val][3]
+                goal_y = QR_coordinates[val][4]
+                print ("Next goal is: ",goal_x,":",goal_y)
+                
+                goto_position([goal_x,goal_y],'qr_code')
+                
