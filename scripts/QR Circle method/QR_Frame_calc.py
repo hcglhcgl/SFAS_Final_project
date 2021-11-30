@@ -30,45 +30,39 @@ def QR_frame_calc(baseFrameQrPos, newFrameQrPos):
   midPointDist = (rQR1**2 - rQR2**2 + dist**2)/(2**dist)
   #MiddLe point position
   midPoint = bfQR1 + (midPointDist * (bfQR2 - bfQR1))/dist
-  #If there is only one intersection
-  if dist > rQR1 + rQR2:
-    #Middle point becomes the intersection point and the center of QR frane
-    framePoint = midPoint
-    #Calculate vector for QR frame to first QR code
-    QR1vec = [bfQR1[0] - framePoint[0],bfQR1[1]-framePoint[1]]
-    #Calculate an angle that the frane has to be rotated
-    rotAngle = calcVecAngle(nfQR1,QR1vec)
-    return framePoint, rotAngle
-  #Otherwise, there are 2 intersections
             
   #Distance from middle to intersection
   midToIntersDist = np.sqrt(rQR1**2-midPointDist**2)
   #Calc 2 intersections one of then is the frame point
-  framePoint1 = midPoint + (midToIntersDist * (np.flip(bfQR2,0) - np.flip(bfQR1, 0)).dot([[1, 0],[0, -1]]))/dist
-  framePoint2 = midPoint + (midToIntersDist * (np.flip(bfQR2,0) - np.flip(bfQR1, 0)).dot([[-1, 0],[0, 1]]))/dist
+
+  interx1 = midPoint[0] + midToIntersDist*(bfQR2[1]-bfQR1[1])/dist
+  interx2 = midPoint[0] - midToIntersDist*(bfQR2[1]-bfQR1[1])/dist
+
+  intery1 = midPoint[1] - midToIntersDist*(bfQR2[0]-bfQR1[0])/dist
+  intery2 = midPoint[1] + midToIntersDist*(bfQR2[0]-bfQR1[0])/dist
   #CalculLate an angle that the frame has to be rotated
-  tempQR1vec = [bfQR1[0] - framePoint1[0], bfQR1[1] - framePoint1[1]]
-  tempRotAngle = calcVecAngle(nfQR1, tempQR1vec)
+  tempQR1vec = [bfQR1[0] - interx1, bfQR1[1] - intery1]
+  tempRotAngle = calcVecAngle(bfQR1, tempQR1vec)
   #Calculate rotation matrix to check if the angle workS for the other QR position
   c,s = np.cos(tempRotAngle), np.sin(tempRotAngle)
   rotMatrix = np.array( ((c,-s), (s, c)))
   testVec = rotMatrix.dot(nfQR2.T)
   #If the rotation works for the other QR, return
-  accuracy = abs(framePoint1 + testVec - bfQR2)
+  accuracy = abs(np.array([interx1,intery1]) + testVec - bfQR2)
   print ("Accuracy 1:",accuracy)
   if accuracy[0]<ACC_THRESHOLD and accuracy[1] < ACC_THRESHOLD:
-    return framePoint1, tempRotAngle
+    return np.array([interx1,intery1]), tempRotAngle
   #Else check the other intersection
-  tempQR1vec = [bfQR1[0] - framePoint2[0], bfQR1[1] - framePoint2[1]]
-  tempRotAngle = calcVecAngle(nfQR1, tempQR1vec)
+  tempQR2vec = [bfQR2[0] - interx2, bfQR2[1] - intery2]
+  tempRotAngle = calcVecAngle(bfQR2, tempQR2vec)
   #Calculate rotation matrix to check if the angle works for the other OR position
   c,s = np.cos(tempRotAngle) , np.sin(tempRotAngle)
   rotMatrix = np.array(((c, -s), (s, c)))
-  testvec = rotMatrix.dot(nfQR2.T)
+  testvec2 = rotMatrix.dot(nfQR1.T)
   #If the rotation Works for the other QR, return
-  accuracy = abs(framePoint2 + testVec - bfQR2)
+  accuracy = abs(np.array([interx2,intery2]) + testvec2 - bfQR1)
   print("Accuracy 2: ",accuracy)
   if accuracy[0] < ACC_THRESHOLD and accuracy[1] < ACC_THRESHOLD:
-    return framePoint2, tempRotAngle
+    return np.array([interx2,intery2]), tempRotAngle
   #else, there is a dumpster fire somehere
   return -2
