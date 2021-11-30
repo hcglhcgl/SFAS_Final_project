@@ -87,6 +87,7 @@ def getQR(data):
             L = data.data.split("\r\n")[5].split("=")[1]                # Letter from current QR target
             
             if L not in finalWord_list:
+                stop()
                 finalWord_list[N-1] = L
                 print (x, y, x_next, y_next, N, L, finalWord_list)
                 
@@ -131,7 +132,7 @@ if __name__ == '__main__':
     Cmd_vel = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
     rospy.Subscriber("visp_auto_tracker/code_message", String, getQR, queue_size=10)
     rospy.Subscriber("visp_auto_tracker/object_position", PoseStamped, object_position_callback, queue_size=10)
-    #rospy.Subscriber('odom', Odometry, printOdo, queue_size=10)
+    rospy.Subscriber('odom', Odometry, printOdo, queue_size=10)
     ##Initial random driving:
     print ("Random Driving mode")
     while not transform_succesful:
@@ -161,5 +162,6 @@ if __name__ == '__main__':
                 print ("Framepoint: ",framepoint, "Angle: ",angle)
                 transform_succesful = True
             QR_spotted = False
+    
         
         
