@@ -162,7 +162,7 @@ if __name__ == '__main__':
                 shift,angle = QR.QR_frame_calc(first_coordinates_world[0:4],first_coordinates_qr[0:4])
                 if shift is not False and angle is not False:
                     print ("Framepoint: ",framepoint, "Angle: ",angle)
-                    transform_succesful = True
+                transform_succesful = True
             QR_spotted = False
     while 0 in finalWord_list:
         #Find the last coordinates with direct navigation
