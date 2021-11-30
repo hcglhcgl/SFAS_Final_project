@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-#from typing_extensions import final
 import numpy as np
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 import QR_Frame_calc as QR
@@ -165,12 +164,15 @@ if __name__ == '__main__':
                 transform_succesful = True
             QR_spotted = False
     while 0 in finalWord_list:
+        print ("Let's find the rest of the coordinates!")
         #Find the last coordinates with direct navigation
         for i,val in enumerate(finalWord_list):
-            if i is not 0:
-                goal_x = QR_coordinates[val][3]
-                goal_y = QR_coordinates[val][4]
+            if val != 0:
+                print ("index: ", i)
+                print("val:",val)
+                goal_x = QR_coordinates[i][2]
+                goal_y = QR_coordinates[i][3]
                 print ("Next goal is: ",goal_x,":",goal_y)
                 
-                goto_position([goal_x,goal_y],'qr_code')
+                goto_position([[goal_x, goal_y, 0], [0, 0, 0, 1]],'qr_code')
                 
